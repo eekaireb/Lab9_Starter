@@ -87,21 +87,171 @@
     </section>
   </main>
 
+  <script src ="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
+
+  window.TrackJS && TrackJS.install({ 
+    token: "ed4640ea65534c158e92e4484f15ab93"
+    // for more configuration options, see https://docs.trackjs.com
+  });
+
+  TrackJS.track('Testing TrackJS!');
+
+
     let form = document.querySelector('form');
+
+    
+    // Start your code here
+    // You may move this JS to another file if you wish
+    class InvalidInputError extends Error {
+      constructor(message) {
+        super(message); // (1)
+        this.name = "InvalidInputError"; // (2)
+      }
+    }
+
     form.addEventListener('submit', e => {
       e.preventDefault();
       let output = document.querySelector('output');
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+    
+    try{
+      if(isNaN(firstNum)||isNaN(secondNum))
+      {
+        throw new InvalidInputError("Input is not a number");
+      }
+    }
+    catch(err)
+    {
+      console.error("Input is not a number");
+    }
+    
+
+    try{
+        if(isNaN(eval(`${firstNum} ${operator} ${secondNum}`)))
+          throw new Error("Result is NaN")
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+    }
+    catch(err){
+        console.error("This computation is invalid");
+    }
+    finally{
+        console.log("Try again!")
+    }
+ 
     });
 
-    let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
+      let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
-    // Start your code here
-    // You may move this JS to another file if you wish
+
+    
+
+    //console.log
+    errorBtns[0].addEventListener('click', () => {
+      console.log("Hello from the console log");
+    });
+
+    //console.error
+    errorBtns[1].addEventListener('click', () => {
+      console.error("I can't do that");
+    })
+
+    //console.count 
+    errorBtns[2].addEventListener('click', () => {
+      console.count("counting clicks");
+    })
+
+    //console.warn
+    errorBtns[3].addEventListener('click', () => {
+      console.warn("this is a warning");
+    })
+
+    //console.assert
+    errorBtns[4].addEventListener('click', () => {
+      const x = 1;
+      const y = 2;
+      const reason = 'x is supposed to equal y'
+      console.assert(x == y, {x,y,reason});
+    })
+
+    //console.clear
+    errorBtns[5].addEventListener('click', () => {
+      console.clear();
+    })
+
+    //console.dir
+    errorBtns[6].addEventListener('click', () => {
+      console.dir(document.head);
+    })
+
+    //console.dirxml
+    errorBtns[7].addEventListener('click', () => {
+      console.dirxml(document);
+    })
+
+    //console.group start
+    errorBtns[8].addEventListener('click', () => {
+      const label = 'Days of Week';
+      console.group(label);
+      console.info('Mon');
+      console.info('Tue');
+      console.info('Wed');
+      console.info('Th');
+ 
+    })
+
+    //console.group end
+    errorBtns[9].addEventListener('click', () => {
+      const label = 'Days of Week';
+      console.groupEnd(label);   
+    })
+
+    //console table
+    errorBtns[10].addEventListener('click', () => {
+      console.table([
+      {
+        Name: 'Emily',
+        Age: '11',
+      },
+      {
+        Name: 'Matthew',
+        Age: '10'
+      }
+      ]);
+    })
+
+    //start timer
+    errorBtns[11].addEventListener('click', () => {
+      console.time('timer');
+    })
+
+    //end timer
+    errorBtns[12].addEventListener('click', () => {
+      console.timeEnd('timer');
+    })
+
+    //console trace
+    errorBtns[13].addEventListener('click', () => {
+      const first = () => { second(); };
+      const second = () => { third(); };
+      const third = () => { fourth(); };
+      const fourth = () => { console.trace(); };
+      first(); 
+    })
+
+    //trigger a global event
+    errorBtns[14].addEventListener('click', () => {
+      throw new Error("A global error occurred");
+    })
+
+    if(window.onerror) {
+        console.log(window.onerror);
+    }
+
+
+
   </script>
 </body>
 
